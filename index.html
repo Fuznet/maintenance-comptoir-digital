@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maintenance Embed</title>
+  <title>Comptoir Digital — Maintenance</title>
   <style>
     :root{
       --brand:#153d68;
@@ -15,85 +15,80 @@
       --shadow:0 8px 24px rgba(0,0,0,.08);
       --gap:12px;
       --pad:8px;
-      --header-h:64px; /* Ajuste si tu changes la hauteur du header */
+      --header-h:64px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
+      margin:0; background:var(--bg); color:var(--text);
       font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
 
-    /* Header (collant) */
-    .site-header{
-      position:sticky; top:0; z-index:20;
-      background:var(--brand); color:#fff;
-      box-shadow:0 2px 10px rgba(0,0,0,.1);
-      height:var(--header-h);
-    }
-    .header-inner{
-      height:100%;
-      display:flex; align-items:center; gap:14px;
-      padding:0 14px;
-    }
+    /* Header compact */
+    .site-header{position:sticky; top:0; z-index:20; height:var(--header-h);
+      background:var(--brand); color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.1)}
+    .header-inner{height:100%; display:flex; align-items:center; gap:14px; padding:0 14px}
     .brand{display:flex; align-items:center; gap:12px; min-width:0}
-    .brand img{height:34px; width:auto; display:block; filter: drop-shadow(0 1px 0 rgba(0,0,0,.2))}
+    .brand img{height:34px; width:auto; display:block; filter:drop-shadow(0 1px 0 rgba(0,0,0,.2))}
     .brand-title{font-weight:600; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .tag{margin-left:auto; font-size:12px; color:#dbeafe; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); padding:4px 8px; border-radius:999px}
 
-    /* Pleine largeur + hauteur d’écran pour le contenu */
-    .wrap{
-      padding:var(--pad);
-      height:calc(100vh - var(--header-h));
-    }
-    .grid{
-      display:grid; gap:var(--gap);
-      grid-template-columns: 1fr 1fr;
-      height:100%;
-    }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-    }
+    /* Zone principale en plein écran/largeur */
+    .wrap{padding:var(--pad); height:calc(100vh - var(--header-h))}
+    .grid{display:grid; gap:var(--gap); grid-template-columns:1fr 1fr; height:100%}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
 
-    .panel{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      display:flex; flex-direction:column;
-      overflow:hidden;
-      min-height:0; /* important pour que l’iframe prenne toute la hauteur disponible */
-    }
-    .panel-header{
-      padding:10px 12px;
-      background:linear-gradient(0deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));
-      border-bottom:1px solid #eef1f6;
-      display:flex; align-items:center; gap:10px;
-      flex:0 0 auto;
-    }
-    .dot{width:10px; height:10px; border-radius:50%;}
-    .dot.red{background:#ef4444} .dot.yellow{background:#f59e0b} .dot.green{background:#10b981}
+    .panel{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+      display:flex; flex-direction:column; overflow:hidden; min-height:0}
+    .panel-header{padding:10px 12px; background:linear-gradient(0deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));
+      border-bottom:1px solid #eef1f6; display:flex; align-items:center; gap:10px; flex:0 0 auto}
+    .dot{width:10px; height:10px; border-radius:50%} .red{background:#ef4444}.yellow{background:#f59e0b}.green{background:#10b981}
     .panel-title{font-size:14px; color:var(--muted)}
 
-    /* Cadre iframe : plein espace, possibilité de rogner le haut */
+    /* Cadre iframe plein espace + options de rognage/masque */
     .frame{
-      position:relative; flex:1 1 auto; min-height:0;
-      overflow:hidden; /* nécessaire pour le rognage top */
-      /* Personnalisation du rognage par variable CSS : --crop-top */
-      --crop-top: 0px; /* mets par ex. 60px pour couper une barre en haut */
+      position:relative; flex:1 1 auto; min-height:0; overflow:hidden;
+      --crop-top:0px;     /* >0px si tu veux couper une barre en haut */
+      --mask-bottom:44px; /* hauteur à masquer visuellement en bas (ex: “Powered by …”) */
+      --mask-color: var(--card);
     }
     .frame iframe{
-      position:absolute; left:0; right:0; top:calc(var(--crop-top) * -1);
-      width:100%;
-      height:calc(100% + var(--crop-top));
+      position:absolute; left:0; right:0;
+      top:calc(var(--crop-top) * -1);
+      width:100%; height:calc(100% + var(--crop-top));
       border:0;
     }
-
-    /* Marges extérieures minimales (full-bleed visuel) */
-    @media (min-width: 981px){
-      body{background:linear-gradient(#e9eef6 0, #f6f7fb 80%)}
+    /* Masque bas pour cacher la zone de branding dans l’iframe */
+    .frame::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:0; height:var(--mask-bottom);
+      background:linear-gradient(to bottom, rgba(255,255,255,0), var(--mask-color) 60%);
+      pointer-events:none;
     }
+
+    /* Écran d’accès par MDP (simple front) */
+    .gate{
+      position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:50;
+      padding:20px;
+    }
+    .gate-card{
+      width:100%; max-width:420px; background:#fff; border-radius:14px; box-shadow:var(--shadow);
+      padding:20px; text-align:center;
+    }
+    .gate-card h1{margin:.2em 0 .4em; font-size:18px}
+    .gate-card input{
+      width:100%; padding:12px 14px; border-radius:10px; border:1px solid #e5e7eb; outline:0;
+    }
+    .gate-actions{display:flex; gap:12px; margin-top:12px}
+    .btn{
+      flex:1; padding:10px 14px; border:0; border-radius:10px; cursor:pointer; font-weight:600
+    }
+    .btn-primary{background:var(--brand); color:#fff}
+    .btn-ghost{background:#f3f4f6}
+    .gate-error{color:#dc2626; font-size:13px; min-height:1em; margin-top:8px}
+
+    /* Affichage/masquage via classes */
+    .hidden{display:none !important}
   </style>
 </head>
 <body>
@@ -101,20 +96,31 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <img
-          src="https://comptoirdigital.com/wp-content/uploads/2024/09/Horizontal-2-e1728243487280.png"
-          alt="Logo"
-          loading="eager"
-          decoding="async"
-        />
+        <img src="https://comptoirdigital.com/wp-content/uploads/2024/09/Horizontal-2-e1728243487280.png" alt="Logo" loading="eager" decoding="async"/>
         <div class="brand-title">Comptoir Digital — Maintenance</div>
       </div>
       <span class="tag">mode intégration</span>
     </div>
   </header>
 
-  <!-- CONTENU PLEIN ÉCRAN -->
-  <main class="wrap">
+  <!-- ÉCRAN D’ACCÈS (MDP côté front) -->
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <h1>Accès protégé</h1>
+      <p style="color:#6b7280;margin-top:4px">Entrez le mot de passe pour afficher les tableaux.</p>
+      <div style="margin:12px 0">
+        <input id="pwd" type="password" placeholder="Mot de passe" autocomplete="current-password" />
+      </div>
+      <div class="gate-actions">
+        <button class="btn btn-ghost" onclick="document.getElementById('pwd').value='';document.getElementById('pwd').focus()">Effacer</button>
+        <button class="btn btn-primary" onclick="unlock()">Entrer</button>
+      </div>
+      <div id="gateErr" class="gate-error"></div>
+    </div>
+  </div>
+
+  <!-- CONTENU -->
+  <main id="content" class="wrap hidden">
     <div class="grid">
       <!-- Gauche : Formulaire -->
       <section class="panel">
@@ -122,7 +128,8 @@
           <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
           <span class="panel-title">Formulaire de demande</span>
         </div>
-        <div class="frame" style="--crop-top: 0px;">
+        <!-- Ajuste --crop-top si une barre est en haut ; ajuste --mask-bottom pour cacher “Powered by …” en bas -->
+        <div class="frame" style="--crop-top:0px; --mask-bottom:44px;">
           <iframe
             title="Formulaire de demande"
             src="https://forms.trll.io/SVqd3zG5/formulaire-de-demande?embed=iframe"
@@ -135,10 +142,9 @@
       <section class="panel">
         <div class="panel-header">
           <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-          <span class="panel-title">Maintenance – Tihani</span>
+          <span class="panel-title">Maintenance — Tihani</span>
         </div>
-        <!-- Si tu veux masquer une barre en haut, ajuste --crop-top (ex: 56px) -->
-        <div class="frame" style="--crop-top: 0px;">
+        <div class="frame" style="--crop-top:0px; --mask-bottom:0px;">
           <iframe
             title="Maintenance Tihani"
             src="https://trll.io/Tmb9ZbF2hd/maintenance-tihani?pwd=WVFzT008o5L2vFD-"
@@ -148,5 +154,36 @@
       </section>
     </div>
   </main>
+
+  <script>
+    // ⚠️ Protection "légère" (front uniquement) pour GitHub Pages
+    // Remplace le mot de passe ci-dessous par le tien
+    const PASS = "tihani1";
+
+    function unlock(){
+      const input = document.getElementById('pwd');
+      const err = document.getElementById('gateErr');
+      if(input.value === PASS){
+        document.getElementById('gate').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+        // Option: mémoriser localement pour la session
+        sessionStorage.setItem('ok', '1');
+      } else {
+        err.textContent = "Mot de passe incorrect.";
+      }
+    }
+
+    // Auto-déverrouillage si déjà validé
+    (function(){
+      if(sessionStorage.getItem('ok') === '1'){
+        document.getElementById('gate').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+      }
+      // Entrée clavier
+      document.getElementById('pwd').addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){ unlock(); }
+      });
+    })();
+  </script>
 </body>
 </html>
