@@ -58,13 +58,7 @@
       width:100%; height:calc(100% + var(--crop-top));
       border:0;
     }
-    /* Masque bas pour cacher la zone de branding dans l’iframe */
-    .frame::after{
-      content:"";
-      position:absolute; left:0; right:0; bottom:0; height:var(--mask-bottom);
-      background:linear-gradient(to bottom, rgba(255,255,255,0), var(--mask-color) 60%);
-      pointer-events:none;
-    }
+
 
     /* Écran d’accès par MDP (simple front) */
     .gate{
