@@ -1,48 +1,162 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maintenance Embed</title>
   <style>
-    body {
-      margin: 0;
-      display: flex;
-      height: 100vh;
-      font-family: sans-serif;
+    :root{
+      --brand:#153d68;
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --radius:16px;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
     }
-    .left, .right {
-      flex: 1;
-      padding: 10px;
-      box-sizing: border-box;
-      overflow: hidden;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
-    .left iframe, .right iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+
+    /* Header */
+    .site-header{
+      position:sticky; top:0; z-index:20;
+      background:var(--brand);
+      color:#fff;
+      box-shadow:0 2px 10px rgba(0,0,0,.1);
     }
-    .left {
-      background: #f4f4f4;
+    .header-inner{
+      max-width:1200px; margin:0 auto;
+      display:flex; align-items:center; gap:16px;
+      padding:14px 20px;
     }
-    .right {
-      background: #fff;
-      border-left: 2px solid #ddd;
+    .brand{
+      display:flex; align-items:center; gap:14px; min-width:0;
     }
+    .brand img{
+      height:34px; width:auto; display:block;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,.2));
+    }
+    .brand-title{
+      font-weight:600; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .tag{
+      margin-left:auto;
+      font-size:12px; color:#dbeafe; background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      padding:4px 8px; border-radius:999px;
+    }
+
+    /* Layout */
+    .wrap{
+      max-width:1200px; margin:20px auto; padding:0 16px;
+    }
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      display:flex; flex-direction:column; min-height:300px;
+      overflow:hidden; /* pour arrondis propres sur l’iframe */
+    }
+    .panel-header{
+      padding:10px 14px;
+      background:linear-gradient(0deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));
+      border-bottom:1px solid #eef1f6;
+      display:flex; align-items:center; gap:10px;
+    }
+    .dot{width:10px; height:10px; border-radius:50%;}
+    .dot.red{background:#ef4444} .dot.yellow{background:#f59e0b} .dot.green{background:#10b981}
+    .panel-title{font-size:14px; color:var(--muted)}
+    .frame{
+      position:relative; flex:1; min-height:400px;
+      background:
+        linear-gradient(90deg, #f3f4f6 25%, #eceff3 37%, #f3f4f6 63%) 0 0/400% 100%;
+      animation: shimmer 2s infinite linear;
+    }
+    .frame iframe{
+      position:absolute; inset:0; width:100%; height:100%; border:0;
+    }
+    @keyframes shimmer {
+      0% {background-position:200% 0}
+      100% {background-position:-200% 0}
+    }
+
+    /* Footer mini */
+    .site-footer{
+      text-align:center; color:var(--muted); font-size:12px;
+      padding:20px 10px 30px;
+    }
+    .link{color:#4467a9; text-decoration:none}
+    .link:hover{text-decoration:underline}
   </style>
 </head>
 <body>
-  <div class="left">
-    <iframe 
-      src="https://forms.trll.io/SVqd3zG5/formulaire-de-demande?embed=iframe" 
-      title="Formulaire de demande">
-    </iframe>
-  </div>
+  <!-- HEADER avec logo blanc sur fond #153d68 -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img
+          src="https://comptoirdigital.com/wp-content/uploads/2024/09/Horizontal-2-e1728243487280.png"
+          alt="Logo"
+          loading="eager"
+          decoding="async"
+        />
+        <div class="brand-title">Maintenance – Tableau & Formulaire</div>
+      </div>
+      <span class="tag">mode intégration</span>
+    </div>
+  </header>
 
-  <div class="right">
-    <iframe 
-      src="https://trll.io/Tmb9ZbF2hd/maintenance-tihani?pwd=WVFzT008o5L2vFD-" 
-      allowfullscreen>
-    </iframe>
-  </div>
+  <!-- CONTENU -->
+  <main class="wrap">
+    <div class="grid">
+      <!-- Gauche : Formulaire -->
+      <section class="panel">
+        <div class="panel-header">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="panel-title">Formulaire de demande</span>
+        </div>
+        <div class="frame">
+          <iframe
+            title="Formulaire de demande"
+            src="https://forms.trll.io/SVqd3zG5/formulaire-de-demande?embed=iframe"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <!-- Droite : Maintenance -->
+      <section class="panel">
+        <div class="panel-header">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="panel-title">Maintenance – Tihani</span>
+        </div>
+        <div class="frame">
+          <iframe
+            title="Maintenance Tihani"
+            src="https://trll.io/Tmb9ZbF2hd/maintenance-tihani?pwd=WVFzT008o5L2vFD-"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    Propulsé par GitHub Pages • <span class="link">v1.0</span>
+  </footer>
 </body>
 </html>
