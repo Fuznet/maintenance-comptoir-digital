@@ -119,60 +119,64 @@
     </div>
   </main>
 
-  <script>
-    const USERS = {
-      "vanessa.bussinger@gmail.com": {
-        pass: "tihani1",
-        name: "Tihani",
-        formUrl: "https://forms.trll.io/SVqd3zG5/formulaire-de-demande?embed=iframe",
-        mainUrl: "https://trll.io/Tmb9ZbF2hd/maintenance-tihani?pwd=WVFzT008o5L2vFD-"
-      },
-      "x.gambade@gmail.com": { // Remplacez par le mail réel du client Plancha
-        pass: "plancha1",
-        name: "Carrément Plancha",
-        formUrl: "https://forms.trll.io/-wZbYACA/formulaire-de-demande?embed=iframe",
-        mainUrl: "https://trll.io/j25DYtXttk/maintenance-carrément-plancha?pwd=S_j75Rmk4vPNZCGz"
-      }
-    };
-
-    function login() {
-      const email = document.getElementById('email').value.trim().toLowerCase();
-      const pwd = document.getElementById('pwd').value;
-      const err = document.getElementById('gateErr');
-      const user = USERS[email];
-
-      if (user && user.pass === pwd) {
-        setupDashboard(user);
-        sessionStorage.setItem('active_user', email);
-      } else {
-        err.textContent = "Identifiants incorrects.";
-      }
+<script>
+  const USERS = {
+    "vanessa.bussinger@gmail.com": {
+      pass: "tihani1",
+      name: "Tihani",
+      formUrl: "https://forms.trll.io/SVqd3zG5/formulaire-de-demande?embed=iframe",
+      mainUrl: "https://trll.io/Tmb9ZbF2hd/maintenance-tihani?pwd=WVFzT008o5L2vFD-"
+    },
+    "x.gambade@gmail.com": {
+      pass: "plancha1",
+      name: "Carrément Plancha",
+      formUrl: "https://forms.trll.io/-wZbYACA/formulaire-de-demande?embed=iframe",
+      mainUrl: "https://trll.io/j25DYtXttk/maintenance-carr%C3%A9ment-plancha?pwd=S_j75Rmk4vPNZCGz"
     }
+  };
 
-    function setupDashboard(user) {
-      document.getElementById('dynamic-title').textContent = "— Maintenance " + user.name;
-      document.getElementById('panel-shop-name').textContent = "Suivi — " + user.name;
-      document.getElementById('iframe-form').src = user.formUrl;
-      document.getElementById('iframe-main').src = user.mainUrl;
+  function login() {
+    // On récupère les valeurs et on retire les espaces au début/fin (.trim)
+    const email = document.getElementById('email').value.trim().toLowerCase();
+    const pwd = document.getElementById('pwd').value.trim(); 
+    const err = document.getElementById('gateErr');
+    
+    console.log("Tentative de connexion pour :", email); // Debug console
 
-      document.getElementById('gate').classList.add('hidden');
-      document.getElementById('content').classList.remove('hidden');
-      document.getElementById('logout-ui').classList.remove('hidden');
+    const user = USERS[email];
+
+    if (user && user.pass === pwd) {
+      setupDashboard(user);
+      sessionStorage.setItem('active_user', email);
+    } else {
+      err.textContent = "Identifiants incorrects (vérifiez l'email et le mot de passe).";
     }
+  }
 
-    function logout() {
-      sessionStorage.removeItem('active_user');
-      window.location.reload();
-    }
+  function setupDashboard(user) {
+    document.getElementById('dynamic-title').textContent = "— Maintenance " + user.name;
+    document.getElementById('panel-shop-name').textContent = "Suivi — " + user.name;
+    document.getElementById('iframe-form').src = user.formUrl;
+    document.getElementById('iframe-main').src = user.mainUrl;
 
-    (function(){
-      const saved = sessionStorage.getItem('active_user');
-      if (saved && USERS[saved]) setupDashboard(USERS[saved]);
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !document.getElementById('gate').classList.contains('hidden')) login();
-      });
-    })();
-  </script>
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('content').classList.remove('hidden');
+    document.getElementById('logout-ui').classList.remove('hidden');
+  }
+
+  function logout() {
+    sessionStorage.removeItem('active_user');
+    window.location.reload();
+  }
+
+  (function(){
+    const saved = sessionStorage.getItem('active_user');
+    if (saved && USERS[saved]) setupDashboard(USERS[saved]);
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !document.getElementById('gate').classList.contains('hidden')) login();
+    });
+  })();
+</script>
 </body>
 </html>
